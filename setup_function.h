@@ -94,19 +94,19 @@ void setupFunction()
     // WiFi.mode(WIFI_OFF);
     //  Set WiFi to station mode
     WiFi.mode(WIFI_STA);
-    //    wifiMulti.addAP("DIR-825-8e26", "Mdcvsww0805197922");
-    wifiMulti.addAP("TP-LINK_4A0934", "12719181");
-    Serial.println("\n ESP8266 Multi WiFi example 11");
-    //    wifiMulti.addAP("Tenda_B4C7B0", "@0805197922@");
+        wifiMulti.addAP("DIR-825-8e26", "Mdcvsww0805197922");
+    wifiMulti.addAP("TP-LINK_4A0934", "Mdcvsww0805197922");
+//    Serial.println("\n ESP8266 Multi WiFi example 11");
+    //    wifiMulti.addAP("Tenda_B4C7B0", "0805197922@");
     //    wifiMulti.addAP("Tenda_B4C7B0", "0805197922");
     //    wifiMulti.addAP("Wireless 2.4G_SLAVE", "080519792");
     //    wifiMulti.addAP("Wireless 2.4G_MASTER", "080519792");
     //    wifiMulti.addAP("TP-Link_AFC2", "080519792");
     //    wifiMulti.addAP("UKrtelecom_7BE3E4", "080519792");
-    //    wifiMulti.addAP("DIR-825-5G-8E26", "Mdcvsww0805197922");
-    //    wifiMulti.addAP("Mira", "8660024230");
-    //    wifiMulti.addAP("Benesovi", "8660024230");
-    //    wifiMulti.addAP("SIAP2", "@rFv753ZhN$159iK@");
+//        wifiMulti.addAP("DIR-825-5G-8E26", "Mdcvsww0805197922");
+        wifiMulti.addAP("Mira", "8660024230");
+        wifiMulti.addAP("Benesovi", "8660024230");
+        wifiMulti.addAP("SIAP2", "@rFv753ZhN$159iK@");
     //    wifiMulti.addAP("TP-LINK_DFA38E", "43645343");
 
     Eeprom::readEeprom();

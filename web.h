@@ -34,26 +34,40 @@ const String head = "<!DOCTYPE html><html><head><meta charset=\"utf-8\" /><meta 
 
 const String pageStyles = "<style>\
 body{background-color: #cccccc;font-family: Arial, Helvetica, Sans-Serif;Color: #000088;position: relative;}\
-.scan-wifi {position: relative;max-width: 400px;margin: 0 auto;padding: 15px;background-color: rgb(32, 223, 223);border: 1px solid #000088;border-radius: 20px;padding: 10px;transition: margin 0.5s ;}\
+.scan-wifi {position: relative;margin: 0 auto;padding: 15px;background-color: rgb(32, 223, 223);border-radius: 10px;padding: 10px;transition: margin 0.5s ;}\
+.connect{border-radius: 10px;background-color: rgb(32, 223, 223);}\
 .scan__closed {position: absolute;display: none;right: 10px;top: -5px;font-size: 45px;font-weight: 900;cursor: pointer;transition: color 0.3s;}\
 a{text-decoration: none;border: 1px solid ;padding: 5px;background-color: antiquewhite;border-radius: 10px;}\
-.scan-wifi_list {margin: 10px 0;border: 1px solid #000000;background-color:#cccccc;border-radius: 5px;padding: 2px 10px;font-size: 20px;}\
+.scan-wifi_list {margin: 10px 0;border: 1px solid #000000;background-color:#cccccc;border-radius: 5px;padding: 2px 10px;}\
 .scan-wifi__active .scan-wifi_list {background-color:burlywood;cursor: pointer;}\
-.connect p{text-align:center;padding:0;margin:3px;}\
-.scan-wifi__active .scan__closed {display: block;}.container {max-width: 500px;margin: 0 auto;padding:10px 15px;}.main-title {text-align:center;margin: 0 auto;}\
-.input {line-height: 2;}.btn1 {border-radius: 5px;background-color: lightcoral;cursor: pointer;line-height: 2;}.link-box {text-align: center;margin: 30px 0;}\
-.input-pass{padding-right:30px;}.link {color: inherit;padding: 0;text-transform: uppercase;margin: 0 20px;height: auto;width: 150px;}\
-.form-ssid {margin:0 auto;padding: 10px;max-width: 450px;display: grid;grid-template-columns: 1fr;gap: 20px;}.ssid-items {display: flex;background-color: aquamarine;padding: 5px;}\
-.ssid-items__input {min-width: 230px;display: flex;flex-direction: column;margin-right: 20px;position: relative;}.ssid-items__active {background-color: brown;}\
-.add-ssid, .clear-ssid {background-color: coral;line-height: 2;border-radius: 10px;padding: 0 5px;width: 150px;cursor: pointer;text-align: center;margin-bottom: 5px;}\
-.clear-ssid__check {margin-top: 10px;}.add-ssid:active {background-color: blue;}\
+.connect p{text-align:center;padding:0;margin:3px;padding-top: 10px;}\
+.scan-wifi__inner {display: flex;justify-content: space-between;flex-wrap: wrap;row-gap:5px;}\
+.scan-wifi__active .scan__closed {display: block;}\
+.container {max-width: 500px;margin: 0 auto;padding:10px 15px;}.main-title {text-align:center;margin: 0 auto;}\
+.input {line-height: 2;}\
+.btn1 {border-radius: 5px;background-color: lightcoral;cursor: pointer;line-height: 2;}\
+.link-box {text-align: center;margin: 30px 0;}\
+.input-pass{padding-right:30px;}\
+.link {color: inherit;padding: 0;text-transform: uppercase;margin: 0 20px;height: auto;width: 150px;}\
+.form-ssid {margin:0 auto;padding: 10px;display: grid;grid-template-columns: 1fr;gap: 10px;}\
+.ssid-items {display: flex;flex-wrap:wrap;justify-content: space-between;gap:5px;padding: 5px;}\
+.ssid-items__input {max-width: 48%;width: 100%;display: flex;flex-direction: column;flex-wrap: wrap;row-gap: 5px;margin-right: 5px;position: relative;}\
+.ssid-items__btn{max-width: 48%;width: 100%;}\
+.ssid-items__active {background-color: brown;}\
+.add-ssid, .clear-ssid {line-height: 2;border-radius: 6px;padding: 0 5px;width: 150px;cursor: pointer;text-align:center;margin-bottom: 11px;}\
+.clear-ssid__check {margin-top: 10px;}\
+.add-ssid:active {background-color: blue;}\
 .popap {position: fixed;top: -400px;left: -400px;background-color: chartreuse;width: 300px;padding: 10px 0;transition: top 0.5s, left 0.5s;}\
-.popap-active {top: 20px;left: 20px;}.popap__list {margin: 40px 20px 20px 20px;padding: 0;}\
+.popap-active {top: 20px;left: 20px;}\
+.popap__list {margin: 40px 20px 20px 20px;padding: 0;}\
 .popap__item {list-style: none;padding: 0 10px ;margin:  5px;line-height: 1.5;background-color: crimson;border-radius: 10px;cursor: pointer;}\
-.popap__item:focus {background-color:darkcyan;}.popap__closed {position: absolute;right: 10px;top: -5px;font-size: 45px;font-weight: 900;cursor: pointer;transition: color 0.3s;}\
+.popap__item:focus {background-color:darkcyan;}\
+.popap__closed {position: absolute;right: 10px;top: -5px;font-size: 45px;font-weight: 900;cursor: pointer;transition: color 0.3s;}\
 .popap__closed:hover {color: red;}\
-.reset {position: absolute;top: 15px;left: 50px;} .connect-server, .connect-router {position: absolute;right: 50px;top: 15px;}.disable {display: none;}\
-.scan-wifi__title {color: red;text-align: center;font-size: 1rem;padding: 0;margin: 0;padding-top: 50px;}\
+button{cursor: pointer;width: 100% !important;min-width: 160px;top: 15px; border-radius: 6px;display:block;line-height:2;border:none;}\
+.disable {display: none;}\
+.scan-wifi__title{color: red;text-align: center;font-size: 1rem;padding: 0;margin: 0;margin-bottom: 10px;}\
+@media(max-width: 500px) {.ssid-items__input{min-width: 160px;max-width: 100%;width: 100%;margin-right:0;}.ssid-items__btn{max-width: 100%;width: 100%;}button{width: 100% !important;max-width:100%;}}\
 </style>";
 
 const String pageBody_1 = "</head><body>";
@@ -61,7 +75,7 @@ const String pageBody_2 = "<div class=\"container\"><div class=\"scan-wifi\">\
  <div class=\"scan__closed\">X</div>\
 <p class=\"scan-wifi__title\">Доступні мережі-Available networks-Dostupné sítě</p>\
 <div class=\"scan-wifi__inner\">\
-<a class=\"reset\" href=\"/\">Update</a>";
+<button class=\"reset\" href=\"/\">Update</button>";
 const String form1_3 = "</div>";
 const String pageForm_1 = "</div></div><div class=\"container\"><div class=\"connect\">\
 <p>Список зарегістрованих роутерів</p>\
@@ -198,12 +212,11 @@ void homePage()
 
   if (EEPROM.read(EEPROM_ADRESS_CLIENT_OR_ACCESS_POINT) > 0)
   { // client
-    //  if (checkClientAccessPointRom > 0) { //client
-    server.sendContent("<a href=\"checkedAccesPoint\" class=\"connect-server\">Switch to server mode</a>");
+    server.sendContent("<button href=\"checkedAccesPoint\" class=\"connect-server\">Switch to server mode</button>");
   }
   else
   {
-    server.sendContent("<a href =\"checkedClient\" class=\"connect-router\">Switch to client mode</a>");
+    server.sendContent("<button href =\"checkedClient\" class=\"connect-router\">Switch to client mode</button>");
   }
   server.sendContent(form1_3);
   server.sendContent(form1_2);
@@ -227,11 +240,10 @@ void homePage()
     newSsidString += "\" value=\"";
     newSsidString += arrayPassword[i - 1];
     newSsidString += "\" placeholder=\"Enter your PASSWORD\">\
-<p class=\"password-control\"></p>\
 </div>\
 <div class=\"ssid-items__btn\">\
-<div class=\"add-ssid\">Add a router</div>\
-<div class=\"clear-ssid\"> Clear data</div>\
+<button class=\"add-ssid\">Add a router</button>\
+<button class=\"clear-ssid\"> Clear data</button>\
 </div>\
 </div>";
 
@@ -313,13 +325,13 @@ void router_two()
 {
   if (server.method() != HTTP_POST)
   {
-//    digitalWrite(led, 1);
+    //    digitalWrite(led, 1);
     server.send(405, "text/plain", "Method Not Allowed");
-//    digitalWrite(led, 0);
+    //    digitalWrite(led, 0);
   }
   else
   {
-//    digitalWrite(led, 1);
+    //    digitalWrite(led, 1);
     String message = "POST form was:\n";
     String message1;
     for (uint8_t i = 0; i < server.args(); i++)
@@ -330,13 +342,13 @@ void router_two()
     Serial.println(message1);
     message += message1;
     server.send(200, "text/plain", message);
-//    digitalWrite(led, 0);
+    //    digitalWrite(led, 0);
   }
 }
 
 void handleNotFound()
 {
-//  digitalWrite(led, 1);
+  //  digitalWrite(led, 1);
   String message = "File Not Found\n\n";
   message += "URI: ";
   message += server.uri();
@@ -354,7 +366,7 @@ void handleNotFound()
   // Serial.println(message2);
   message += message2;
   server.send(404, "text/plain", message);
-//  digitalWrite(led, 0);
+  //  digitalWrite(led, 0);
 }
 
 
@@ -442,10 +454,13 @@ void scanWifi()
     for (int8_t i = 0; i < scanResult; i++)
     {
       //      WiFi.getNetworkInfo(i, ssid, encryptionType, rssi, bssid, channel, hidden);
-      form1_2 += "<p class=\"scan-wifi_list\">";
+      if ( WiFi.SSID(i) !="") {
+        form1_2 += "<p class=\"scan-wifi_list\">";
 
-      form1_2 += WiFi.SSID(i);
-      form1_2 += "</p>";
+        form1_2 += WiFi.SSID(i);
+        form1_2 += "</p>";
+      }
+
     }
   }
   else

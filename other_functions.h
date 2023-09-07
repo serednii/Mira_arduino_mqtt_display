@@ -1,6 +1,6 @@
 int counterLcdPage  = 0;
 boolean flagShowCounter = false;
-const byte numLcdShowDisplay = 5;
+const byte numLcdShowDisplay = 3;
 void clearLcdChar() {
   for (byte i = 0; i < 4; i++) {
     lcd.setCursor(0, i);
@@ -31,10 +31,10 @@ class OtherFunction {
         TimerDate::writeEepromObjectDataTimeSendBrouser(dataAndTime, str);
       }
       //      printObjectTime();
-//      kontr_temp();
+      //      kontr_temp();
       Serial.print("void defineDevice()");
       resetFunc();
-//      deviceCountSensor
+      //      deviceCountSensor
     }
     //*************************************************************************************************************************************************
 
@@ -64,7 +64,7 @@ class OtherFunction {
           temtCounter++;
         }
       }
-    //Дописуємо заглушку для масиву в кінець незаповнених обєктів 
+      //Дописуємо заглушку для масиву в кінець незаповнених обєктів
       for (int i = temtCounter; i < 12; i++) {
         tempDs18b20EEprom[i].tempNumberSensor = 100;
         tempDs18b20EEprom[i].strAddress = "0000000000000000";
@@ -72,25 +72,25 @@ class OtherFunction {
         tempDs18b20EEprom[i].temp = 1000;
       }
 
-//      for (int i = 0, l = 0; i < 12; i++, l++) {
-//        prin("ds18b20EEprom", ds18b20EEprom[i].strAddress);
-//        prin("tempDs18b20EEprom", tempDs18b20EEprom[i].strAddress);
-//      }
-//
-//      for (int i = 0, l = 0; i < 12; i++, l++) {
-//        prin("ds18b20EEprom", ds18b20EEprom[i].nameSensor);
-//        prin("tempDs18b20EEprom", tempDs18b20EEprom[i].nameSensor);
-//      }
-//
-//      for (int i = 0, l = 0; i < 12; i++, l++) {
-//        prin("ds18b20EEprom", ds18b20EEprom[i].temp);
-//        prin("tempDs18b20EEprom", tempDs18b20EEprom[i].temp);
-//      }
-//
-//      for (int i = 0, l = 0; i < 12; i++, l++) {
-//        prin("ds18b20EEprom", ds18b20EEprom[i].tempNumberSensor);
-//        prin("tempDs18b20EEprom", tempDs18b20EEprom[i].tempNumberSensor);
-//      }
+      //      for (int i = 0, l = 0; i < 12; i++, l++) {
+      //        prin("ds18b20EEprom", ds18b20EEprom[i].strAddress);
+      //        prin("tempDs18b20EEprom", tempDs18b20EEprom[i].strAddress);
+      //      }
+      //
+      //      for (int i = 0, l = 0; i < 12; i++, l++) {
+      //        prin("ds18b20EEprom", ds18b20EEprom[i].nameSensor);
+      //        prin("tempDs18b20EEprom", tempDs18b20EEprom[i].nameSensor);
+      //      }
+      //
+      //      for (int i = 0, l = 0; i < 12; i++, l++) {
+      //        prin("ds18b20EEprom", ds18b20EEprom[i].temp);
+      //        prin("tempDs18b20EEprom", tempDs18b20EEprom[i].temp);
+      //      }
+      //
+      //      for (int i = 0, l = 0; i < 12; i++, l++) {
+      //        prin("ds18b20EEprom", ds18b20EEprom[i].tempNumberSensor);
+      //        prin("tempDs18b20EEprom", tempDs18b20EEprom[i].tempNumberSensor);
+      //      }
 
 
 start:
@@ -98,6 +98,9 @@ start:
       Serial.println( counterLcdPage  );
       Serial.println(flagShowCounter);
       if ( counterLcdPage < -1) counterLcdPage = 0;
+
+
+      
       if ( counterLcdPage == 0) {
         //*************************lcd***************************
         lcd.clear();
@@ -130,90 +133,161 @@ start:
         //*************************lcd***************************
       } else if ( counterLcdPage == 1) {
         //*************************lcd***************************
-        lcd.clear();                                         // Очищаем LCD дисплей
+        lcd.clear();
+        // Очищаем LCD дисплей
+
         for (int i = 0; i < 4; i++) {
           lcd.setCursor(0, i);
           releControl[i].nameRele.trim();
-          String temp = String(i + 1) + "-" + releControl[i].nameRele;
-          lcd.print(temp.substring(0, NUMBER_CHARS_NAME));
-          lcd.setCursor(13, i);
+          String temp = releControl[i].nameRele;
+          lcd.print(temp.substring(0, NUMBER_CHARS_NAME - 2));
+
+          lcd.setCursor(6, i);
           releControl[i].numberSensorControl < 255 && lcd.print(int(ds18b20EEprom[releControl[i].numberSensorControl].temp));
+
+          lcd.setCursor(8, i);
+          lcd.print(releControl[i].manualAuto ? "M" : "A");
+
+          lcd.setCursor(9, i);
+          lcd.print(digitalRead(releControl[i].numberPin) ? "0" : "1");
+
+
+          lcd.setCursor(10, i);
+          releControl[i + 4].nameRele.trim();
+          temp = releControl[i + 4].nameRele;
+          lcd.print(temp.substring(0, NUMBER_CHARS_NAME - 2));
+
           lcd.setCursor(16, i);
-          lcd.print(releControl[i].manualAuto ? "M" : "A");
+          releControl[i + 4].numberSensorControl < 255 && lcd.print(int(ds18b20EEprom[releControl[i + 4].numberSensorControl].temp));
+
           lcd.setCursor(18, i);
-          lcd.print(digitalRead(releControl[i].numberPin) ? "OF" : "ON");
+          lcd.print(releControl[i + 4].manualAuto ? "M" : "A");
+
+          lcd.setCursor(19, i);
+          lcd.print(digitalRead(releControl[i + 4].numberPin) ? "0" : "1");
+
+
         }
-      } else if ( counterLcdPage == 2) {
-        //*************************lcd***************************
-        lcd.clear();                                         // Очищаем LCD дисплей
-        for (int i = 4, l = 0; i < 8; i++, l++) {
-          lcd.setCursor(0, l);
-          releControl[i].nameRele.trim();
-          String temp = String(i + 1) + "-" + releControl[i].nameRele;
-          lcd.print(temp.substring(0, NUMBER_CHARS_NAME));
-          lcd.setCursor(13, i);
-          releControl[i].numberSensorControl < 255 && lcd.print(int(ds18b20EEprom[releControl[i].numberSensorControl].temp));
-          lcd.setCursor(16, l);
-          lcd.print(releControl[i].manualAuto ? "M" : "A");
-          lcd.setCursor(18, l);
-          lcd.print(digitalRead(releControl[i].numberPin) ? "OF" : "ON");
-        }
-      } else if ( counterLcdPage == 3) {
-          //Якщо на сторінці немає підключених сенсорів то її пропускаємо
-        if (tempDs18b20EEprom[0].strAddress == "0000000000000000" && tempDs18b20EEprom[1].strAddress == "0000000000000000" && tempDs18b20EEprom[2].strAddress == "0000000000000000" && tempDs18b20EEprom[3].strAddress == "0000000000000000") {
-          counterLcdPage < numLcdShowDisplay ?  counterLcdPage++ : counterLcdPage = 0;
-          goto start;
-        }
+      } 
+//      else if ( counterLcdPage == 2) {
+//        //*************************lcd***************************
+//        lcd.clear();                                         // Очищаем LCD дисплей
+//        for (int i = 0; i < 4; i++) {
+//          lcd.setCursor(0, i);
+//          releControl[i].nameRele.trim();
+//          String temp = String(i + 1) + "-" + releControl[i].nameRele;
+//          lcd.print(temp.substring(0, NUMBER_CHARS_NAME));
+//          lcd.setCursor(13, i);
+//          releControl[i].numberSensorControl < 255 && lcd.print(int(ds18b20EEprom[releControl[i].numberSensorControl].temp));
+//          lcd.setCursor(16, i);
+//          lcd.print(releControl[i].manualAuto ? "M" : "A");
+//          lcd.setCursor(18, i);
+//          lcd.print(digitalRead(releControl[i].numberPin) ? "-" : "+");
+//        }
+//      } else if ( counterLcdPage == 3) {
+//        //*************************lcd***************************
+//        lcd.clear();                                         // Очищаем LCD дисплей
+//        for (int i = 4, l = 0; i < 8; i++, l++) {
+//          lcd.setCursor(0, l);
+//          releControl[i].nameRele.trim();
+//          String temp = String(i + 1) + "-" + releControl[i].nameRele;
+//          lcd.print(temp.substring(0, NUMBER_CHARS_NAME));
+//          lcd.setCursor(13, l);
+//          releControl[i].numberSensorControl < 255 && lcd.print(int(ds18b20EEprom[releControl[i].numberSensorControl].temp));
+//          lcd.setCursor(16, l);
+//          lcd.print(releControl[i].manualAuto ? "M" : "A");
+//          lcd.setCursor(18, l);
+//          lcd.print(digitalRead(releControl[i].numberPin) ? "OF" : "ON");
+//        }
+//      } 
+
+
+          else if ( counterLcdPage == 2) {
+        //Якщо на сторінці немає підключених сенсорів то її пропускаємо
         lcd.clear();
+
         for (int i = 0; i < 4; i++) {
           if (tempDs18b20EEprom[i].tempNumberSensor != 100) {
+
+
             lcd.setCursor(0, i);
             tempDs18b20EEprom[i].nameSensor.trim();
-            String temp = String(tempDs18b20EEprom[i].tempNumberSensor) + "-" + tempDs18b20EEprom[i].nameSensor;
-            lcd.print(temp.substring(0, NUMBER_CHARS_NAME));
-            lcd.setCursor(14, i);
-            searchAddressSensor(tempDs18b20EEprom[i].strAddress) ? lcd.print(tempDs18b20EEprom[i].temp) : lcd.print("ERROR") ;
+            String temp =  tempDs18b20EEprom[i].nameSensor;
+            lcd.print(temp.substring(0, NUMBER_CHARS_NAME - 4));
+            lcd.setCursor(5, i);
+            String ss = "-25.36";
+            searchAddressSensor(tempDs18b20EEprom[i].strAddress) ? lcd.print(String(tempDs18b20EEprom[i].temp)) : lcd.print("ERROR");
+
+            lcd.setCursor(10, i);
+            tempDs18b20EEprom[i+4].nameSensor.trim();
+            temp =  tempDs18b20EEprom[i+4].nameSensor;
+            lcd.print(temp.substring(0, NUMBER_CHARS_NAME - 4));
+            lcd.setCursor(15, i);
+            searchAddressSensor(tempDs18b20EEprom[i+4].strAddress) ? lcd.print(String(tempDs18b20EEprom[i+4].temp)) : lcd.print("ERROR");
           }
         }
-      } else if ( counterLcdPage == 4) {
-        //Якщо на сторінці немає підключених сенсорів то її пропускаємо
-        if (tempDs18b20EEprom[4].strAddress == "0000000000000000" && tempDs18b20EEprom[5].strAddress == "0000000000000000" && tempDs18b20EEprom[6].strAddress == "0000000000000000" && tempDs18b20EEprom[7].strAddress == "0000000000000000") {
-          counterLcdPage < numLcdShowDisplay ?  counterLcdPage++ : counterLcdPage = 0;
-          goto start;
-        }
-        lcd.clear();
-        for (int i = 4, l = 0; i < 8; i++, l++) {
-          if (tempDs18b20EEprom[i].tempNumberSensor != 100) {
-            lcd.setCursor(0, l);
-            tempDs18b20EEprom[i].nameSensor.trim();
-            String temp = String(tempDs18b20EEprom[i].tempNumberSensor) + "-" + tempDs18b20EEprom[i].nameSensor;
-            lcd.print(temp.substring(0, NUMBER_CHARS_NAME));
-            lcd.setCursor(14, l);
-            searchAddressSensor(tempDs18b20EEprom[i].strAddress) ? lcd.print(tempDs18b20EEprom[i].temp) : lcd.print("ERROR") ;
-          }
-        }
-      } else if ( counterLcdPage == 5) {
-          //Якщо на сторінці немає підключених сенсорів то її пропускаємо
-        if (tempDs18b20EEprom[8].strAddress == "0000000000000000" && tempDs18b20EEprom[9].strAddress == "0000000000000000" && tempDs18b20EEprom[10].strAddress == "0000000000000000" && tempDs18b20EEprom[11].strAddress == "0000000000000000") {
-          counterLcdPage < numLcdShowDisplay ?  counterLcdPage++ : counterLcdPage = 0;
-          goto start;
-        }
-        lcd.clear();
-        for (int i = 8, l = 0; i < 12; i++, l++) {
-          if (tempDs18b20EEprom[i].tempNumberSensor != 100) {
-            lcd.setCursor(0, l);
-            tempDs18b20EEprom[i].nameSensor.trim();
-            String temp = String(tempDs18b20EEprom[i].tempNumberSensor) + "-" + tempDs18b20EEprom[i].nameSensor;
-            lcd.print(temp.substring(0, NUMBER_CHARS_NAME));
-            lcd.setCursor(14, l);
-            //Якщо в списку ненаходимо дійсно підключених датчиків то виводимо ERROR
-            //
-            searchAddressSensor(tempDs18b20EEprom[i].strAddress) ? lcd.print(tempDs18b20EEprom[i].temp) : lcd.print("ERROR") ;
-//             searchAddressSensor(tempDs18b20EEprom[i].strAddress) ? lcd.print(tempDs18b20EEprom[i].temp) : tempDs18b20EEprom[i].strAddress == "0000000000000000" ? lcd.print("NONE") : lcd.print("ERROR") ;
-          }
-        }
-      }
-      flagShowCounter ? counterLcdPage  : (counterLcdPage < numLcdShowDisplay ?  counterLcdPage++ : counterLcdPage = 0);
+
+
+
+      } 
+//      else if ( counterLcdPage == 5) {
+//        //Якщо на сторінці немає підключених сенсорів то її пропускаємо
+//        if (tempDs18b20EEprom[0].strAddress == "0000000000000000" && tempDs18b20EEprom[1].strAddress == "0000000000000000" && tempDs18b20EEprom[2].strAddress == "0000000000000000" && tempDs18b20EEprom[3].strAddress == "0000000000000000") {
+//          counterLcdPage < numLcdShowDisplay ?  counterLcdPage++ : counterLcdPage = 0;
+//          goto start;
+//        }
+//        lcd.clear();
+//        for (int i = 0; i < 4; i++) {
+//          if (tempDs18b20EEprom[i].tempNumberSensor != 100) {
+//            lcd.setCursor(0, i);
+//            tempDs18b20EEprom[i].nameSensor.trim();
+//            String temp = String(tempDs18b20EEprom[i].tempNumberSensor) + "-" + tempDs18b20EEprom[i].nameSensor;
+//            lcd.print(temp.substring(0, NUMBER_CHARS_NAME));
+//            lcd.setCursor(14, i);
+//            searchAddressSensor(tempDs18b20EEprom[i].strAddress) ? lcd.print(tempDs18b20EEprom[i].temp) : lcd.print("ERROR") ;
+//          }
+//        }
+//      } else if ( counterLcdPage == 6) {
+//        //Якщо на сторінці немає підключених сенсорів то її пропускаємо
+//        if (tempDs18b20EEprom[4].strAddress == "0000000000000000" && tempDs18b20EEprom[5].strAddress == "0000000000000000" && tempDs18b20EEprom[6].strAddress == "0000000000000000" && tempDs18b20EEprom[7].strAddress == "0000000000000000") {
+//          counterLcdPage < numLcdShowDisplay ?  counterLcdPage++ : counterLcdPage = 0;
+//          goto start;
+//        }
+//        lcd.clear();
+//        for (int i = 4, l = 0; i < 8; i++, l++) {
+//          if (tempDs18b20EEprom[i].tempNumberSensor != 100) {
+//            lcd.setCursor(0, l);
+//            tempDs18b20EEprom[i].nameSensor.trim();
+//            String temp = String(tempDs18b20EEprom[i].tempNumberSensor) + "-" + tempDs18b20EEprom[i].nameSensor;
+//            lcd.print(temp.substring(0, NUMBER_CHARS_NAME));
+//            lcd.setCursor(14, l);
+//            searchAddressSensor(tempDs18b20EEprom[i].strAddress) ? lcd.print(tempDs18b20EEprom[i].temp) : lcd.print("ERROR") ;
+//          }
+//        }
+//      } 
+      
+//      else if ( counterLcdPage == 7) {
+//        //Якщо на сторінці немає підключених сенсорів то її пропускаємо
+//        if (tempDs18b20EEprom[8].strAddress == "0000000000000000" && tempDs18b20EEprom[9].strAddress == "0000000000000000" && tempDs18b20EEprom[10].strAddress == "0000000000000000" && tempDs18b20EEprom[11].strAddress == "0000000000000000") {
+//          counterLcdPage < numLcdShowDisplay ?  counterLcdPage++ : counterLcdPage = 0;
+//          goto start;
+//        }
+//        lcd.clear();
+//        for (int i = 8, l = 0; i < 12; i++, l++) {
+//          if (tempDs18b20EEprom[i].tempNumberSensor != 100) {
+//            lcd.setCursor(0, l);
+//            tempDs18b20EEprom[i].nameSensor.trim();
+//            String temp = String(tempDs18b20EEprom[i].tempNumberSensor) + "-" + tempDs18b20EEprom[i].nameSensor;
+//            lcd.print(temp.substring(0, NUMBER_CHARS_NAME));
+//            lcd.setCursor(14, l);
+//            //Якщо в списку ненаходимо дійсно підключених датчиків то виводимо ERROR
+//            //
+//            searchAddressSensor(tempDs18b20EEprom[i].strAddress) ? lcd.print(tempDs18b20EEprom[i].temp) : lcd.print("ERROR") ;
+//            //             searchAddressSensor(tempDs18b20EEprom[i].strAddress) ? lcd.print(tempDs18b20EEprom[i].temp) : tempDs18b20EEprom[i].strAddress == "0000000000000000" ? lcd.print("NONE") : lcd.print("ERROR") ;
+//          }
+//        }
+//      }
+            flagShowCounter ? counterLcdPage  : (counterLcdPage < numLcdShowDisplay ?  counterLcdPage++ : counterLcdPage = 0);
     }
     //*************************************************************************************************************************************************
 
@@ -388,10 +462,9 @@ int controlPin(byte numberRele, int counterPin, byte pinConected) {
   //  Serial.println(counterPin);
   //    Serial.print("flagShowCounter  ------------------------------------- ");
   //  Serial.println(flagShowCounter);
+  
   if (digitalRead(pinConected) == 1) {
-    //    Serial.print("counterPin  ------------------------------------- ");
-    //    Serial.println(counterPin);
-    //    if (counterPin_0 == (connectedInternet ? 10 : 2) && counterPin_3 > 0 ) {
+//ПРи натисканні клавіші 0 та 1 сторінка вперед при цьому зупиняється цикл
     if (counterPin_0 == 50 && counterPin_1 > 0 ) {
       counterLcdPage < numLcdShowDisplay ? counterLcdPage++ : counterLcdPage = 0;
       clearLcdChar();
@@ -402,7 +475,7 @@ int controlPin(byte numberRele, int counterPin, byte pinConected) {
       return counterPin;
 
 
-      //    } else if (counterPin_0 == (connectedInternet ? 10 : 2) && counterPin_2 > 0 ) {
+//ПРи натисканні клавіші 0 та 2 сторінка назад при цьому зупиняється цикл
     } else if (counterPin_0 == 50 && counterPin_2 > 0 ) {
       counterLcdPage  <= 0 ? counterLcdPage  = numLcdShowDisplay :  counterLcdPage--;
       clearLcdChar();
@@ -412,6 +485,7 @@ int controlPin(byte numberRele, int counterPin, byte pinConected) {
       //          prin("counterPin_1", counterPin_2);
       return counterPin;
       //    } else if (counterPin_0 == (connectedInternet ? 10 : 2) && counterPin_1 > 0 ) {
+      //ПРи натисканні клавіші 0 та 3 вілновити цикл
     } else if (counterPin_0 == 50 && counterPin_3 > 0 ) {
       clearLcdChar();
       delay(300);
@@ -442,6 +516,7 @@ int controlPin(byte numberRele, int counterPin, byte pinConected) {
       }
 
 
+
       byte stanRele = 0;
       for (int i = 0; i < NUMBER_RELE; i++) {
         digitalRead(releControl[i].numberPin) == 0 ?  stanRele &= ~(1 << i) : stanRele |= (1 << i);//Формуємо маску бітів про стан кожного реле і відправляємо
@@ -449,7 +524,7 @@ int controlPin(byte numberRele, int counterPin, byte pinConected) {
       client.publish(nameUser + "_stanRele", String(stanRele));
       //      client.publish(nameUser + "_rele-out-eprom_upr-manual", Rele::sendEEPROMDataToJSONSensor());//send name rele
       Rele::sendStanReleManualAuto(releControl);
-      delay(1000);
+      delay(5000);//
       counterPin++;
       //    } else if (counterPin == (connectedInternet ? 30 : 6)) {
     } else if (counterPin == 250) {
@@ -461,7 +536,7 @@ int controlPin(byte numberRele, int counterPin, byte pinConected) {
 
       String temp = "relay " + String(numberRele) + " in automatic";
       lcd.print(temp);
-      delay(1000);
+      delay(5000);//
 
 
       counterPin++;
